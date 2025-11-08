@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management System</title>
+    <title>User Management System - ID: 232-134-043</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,26 +11,47 @@
         <div class="header">
             <h1>User Management System</h1>
             <p>Easily manage your users with add, edit, and delete operations</p>
+            <p style="font-size: 0.9em; opacity: 0.8; margin-top: 5px;">Student ID: 232-134-043</p>
         </div>
 
         <div class="main-content">
+            <!-- Form Card -->
             <div class="card form-card">
                 <h2><?= $editUser ? 'Edit User' : 'Add New User' ?></h2>
                 
-                <form method="POST" id="userForm">
+                <form method="POST" id="userForm" novalidate>
                     <input type="hidden" name="action" value="<?= $editUser ? 'update' : 'add' ?>">
                     <?php if ($editUser): ?>
                         <input type="hidden" name="id" value="<?= $editUser['id'] ?>">
                     <?php endif; ?>
                     
                     <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter full name" required value="<?= $editUser['name'] ?? '' ?>">
+                        <label for="name">Full Name <span style="color: #dc3545;">*</span></label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            placeholder="Enter full name" 
+                            required 
+                            value="<?= $editUser['name'] ?? '' ?>"
+                            autocomplete="name"
+                            minlength="2"
+                            maxlength="100"
+                        >
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="Enter email address" required value="<?= $editUser['email'] ?? '' ?>">
+                        <label for="email">Email Address <span style="color: #dc3545;">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Enter email address" 
+                            required 
+                            value="<?= $editUser['email'] ?? '' ?>"
+                            autocomplete="email"
+                            maxlength="150"
+                        >
                     </div>
                     
                     <div class="button-group">
@@ -40,45 +61,54 @@
                         
                         <?php if ($editUser): ?>
                             <a href="index.php" class="btn-cancel">✕ Cancel</a>
+                        <?php else: ?>
+                            <button type="reset" class="btn-cancel">↺ Reset</button>
                         <?php endif; ?>
                     </div>
                 </form>
             </div>
 
+            <!-- Users List Card -->
             <div class="card table-card">
                 <h2>
                     Users List
-                    <span class="user-count"><?= count($users) ?> Users</span>
+                    <span class="user-count"><?= count($users) ?> <?= count($users) === 1 ? 'User' : 'Users' ?></span>
                 </h2>
                 
                 <?php if (count($users) > 0): ?>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($users as $user): ?>
-                            <tr>
-                                <td><strong>#<?= $user['id'] ?></strong></td>
-                                <td><?= htmlspecialchars($user['name']) ?></td>
-                                <td><?= htmlspecialchars($user['email']) ?></td>
-                                <td class="actions">
-                                    <a href="?edit=<?= $user['id'] ?>"><button class="btn-edit">✏ Edit</button></a>
-                                    <form method="POST" style="display: inline;" class="delete-form">
-                                        <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
-                                        <button type="submit" class="btn-delete">🗑 Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td data-label="ID"><strong>#<?= htmlspecialchars($user['id']) ?></strong></td>
+                                    <td data-label="Name"><?= htmlspecialchars($user['name']) ?></td>
+                                    <td data-label="Email"><?= htmlspecialchars($user['email']) ?></td>
+                                    <td data-label="Actions" class="actions">
+                                        <a href="?edit=<?= $user['id'] ?>" class="btn-edit" title="Edit user">
+                                            ✏ Edit
+                                        </a>
+                                        <form method="POST" class="delete-form" style="display: inline;">
+                                            <input type="hidden" name="action" value="delete">
+                                            <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                            <button type="submit" class="btn-delete" title="Delete user">
+                                                🗑 Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php else: ?>
                     <div class="empty-state">
                         <p>No users found. Add your first user to get started!</p>
@@ -86,14 +116,20 @@
                 <?php endif; ?>
             </div>
         </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Created by Md Fuyad Hassan | Student ID: 232-134-043</p>
+            <p>Web Programming Assignment - User Management System</p>
+        </div>
     </div>
 
     <!-- Popup Message Container -->
-    <div id="popup" class="popup">
+    <div id="popup" class="popup" role="alert" aria-live="assertive">
         <div class="popup-content">
             <span class="popup-icon"></span>
             <span class="popup-message"></span>
-            <button class="popup-close" onclick="closePopup()">✕</button>
+            <button class="popup-close" onclick="closePopup()" aria-label="Close notification">✕</button>
         </div>
     </div>
 
