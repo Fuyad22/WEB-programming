@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>User Management System</h1>
+            <p>Easily manage your users with add, edit, and delete operations</p>
+        </div>
+
+        <div class="main-content">
+            <div class="card form-card">
+                <h2><?= $editUser ? 'Edit User' : 'Add New User' ?></h2>
+                
+                <form method="POST" id="userForm">
+                    <input type="hidden" name="action" value="<?= $editUser ? 'update' : 'add' ?>">
+                    <?php if ($editUser): ?>
+                        <input type="hidden" name="id" value="<?= $editUser['id'] ?>">
+                    <?php endif; ?>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" placeholder="Enter full name" required value="<?= $editUser['name'] ?? '' ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="Enter email address" required value="<?= $editUser['email'] ?? '' ?>">
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="submit" class="<?= $editUser ? 'btn-update' : 'btn-add' ?>">
+                            <?= $editUser ? '✓ Update User' : '+ Add User' ?>
+                        </button>
+                        
+                        <?php if ($editUser): ?>
+                            <a href="index.php" class="btn-cancel">✕ Cancel</a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+            </div>
+
+            <div class="card table-card">
+                <h2>
+                    Users List
+                    <span class="user-count"><?= count($users) ?> Users</span>
+                </h2>
+                
+                <?php if (count($users) > 0): ?>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($users as $user): ?>
+                            <tr>
+                                <td><strong>#<?= $user['id'] ?></strong></td>
+                                <td><?= htmlspecialchars($user['name']) ?></td>
+                                <td><?= htmlspecialchars($user['email']) ?></td>
+                                <td class="actions">
+                                    <a href="?edit=<?= $user['id'] ?>"><button class="btn-edit">✏ Edit</button></a>
+                                    <form method="POST" style="display: inline;" class="delete-form">
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                        <button type="submit" class="btn-delete">🗑 Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else: ?>
+                    <div class="empty-state">
+                        <p>No users found. Add your first user to get started!</p>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Message Container -->
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <span class="popup-icon"></span>
+            <span class="popup-message"></span>
+            <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <?php if (!empty($message)): ?>
+    <script>
+        showPopup('<?= addslashes($message) ?>', '<?= $messageType ?>');
+    </script>
+    <?php endif; ?>
+</body>
+</html>
