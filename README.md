@@ -1,5 +1,15 @@
 This is PHP form from Md Fuyad Hassan.
 It is user management list. Here is option of 
+
+
+
+
+
+
+
+
+
+
 1.Adding Full name
 2.Adding email address
 3.Add button 
