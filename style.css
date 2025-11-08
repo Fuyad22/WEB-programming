@@ -95,6 +95,14 @@ body {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+.form-group input:invalid:not(:focus):not(:placeholder-shown) {
+    border-color: #dc3545;
+}
+
+.form-group input:valid:not(:focus):not(:placeholder-shown) {
+    border-color: #28a745;
+}
+
 .button-group {
     display: flex;
     gap: 10px;
@@ -111,6 +119,10 @@ button, .btn-link {
     transition: all 0.3s;
     text-decoration: none;
     display: inline-block;
+}
+
+button:active {
+    transform: scale(0.95);
 }
 
 .btn-add {
@@ -167,6 +179,10 @@ button, .btn-link {
     margin-left: auto;
 }
 
+.table-responsive {
+    overflow-x: auto;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -204,6 +220,7 @@ tbody tr:hover {
 .actions {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .btn-edit {
@@ -211,6 +228,8 @@ tbody tr:hover {
     color: #333;
     padding: 8px 15px;
     font-size: 0.9em;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-edit:hover {
@@ -241,6 +260,20 @@ tbody tr:hover {
     font-size: 3em;
     display: block;
     margin-bottom: 15px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin-top: 20px;
+    opacity: 0.9;
+}
+
+.footer p {
+    margin: 5px 0;
+    font-size: 0.95em;
 }
 
 /* Popup Styles */
@@ -368,6 +401,7 @@ tbody tr:hover {
     color: #ffc107;
 }
 
+/* Responsive Design */
 @media (max-width: 968px) {
     .main-content {
         grid-template-columns: 1fr;
@@ -375,24 +409,88 @@ tbody tr:hover {
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     .header h1 {
         font-size: 2em;
     }
     
+    .card {
+        padding: 20px;
+    }
+
     table {
         font-size: 0.9em;
     }
     
     th, td {
+        padding: 10px 8px;
+    }
+
+    /* Mobile table styling */
+    thead {
+        display: none;
+    }
+
+    tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border: 2px solid #667eea;
+        border-radius: 8px;
         padding: 10px;
+    }
+
+    tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border: none;
+    }
+
+    tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #667eea;
+    }
+
+    .actions {
+        justify-content: flex-end;
+        width: 100%;
     }
     
     .popup {
         right: 10px;
         left: 10px;
+        top: 10px;
     }
     
     .popup-content {
         min-width: auto;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group button,
+    .button-group a {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.95em;
+    }
+
+    .form-card h2,
+    .table-card h2 {
+        font-size: 1.4em;
     }
 }
